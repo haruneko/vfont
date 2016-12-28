@@ -14,7 +14,7 @@
 namespace haruneko {
 namespace voicebank {
 
-    class Segment {
+    class Segment final {
         class SegmentData : public QSharedData {
         public:
             SegmentData(

@@ -17,7 +17,7 @@ get_target_property(QtTest_location Qt5::Test LOCATION)
 include_directories("." "../main" "../../util/main")
 
 # include main sources.
-add_executable(haruneko_voicebank_test test_main.cpp MultipleTest.h MultipleTest.cpp values/json/SegmentJsonSpec.h)
+add_executable(haruneko_voicebank_test test_main.cpp MultipleTest.h MultipleTest.cpp values/json/SegmentJsonSpec.h ../main/values/json/PrononuceJson.cpp ../main/values/json/PrononuceJson.h)
 
 target_link_libraries(haruneko_voicebank_test
     PRIVATE

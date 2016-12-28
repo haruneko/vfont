@@ -7,32 +7,32 @@
 #ifndef HARUNEKO_VOICEBANK_ROOT_MAPPING_H
 #define HARUNEKO_VOICEBANK_ROOT_MAPPING_H
 
-#include <QMap>
+#include <QList>
 #include <QSharedData>
 #include "values/Pronounce.h"
-#include "values/Segment.h"
+#include "values/Range.h"
 
 namespace haruneko {
 namespace voicebank {
 
-    class Mapping {
+    class Mapping final {
         class MappingData : public QSharedData {
         public:
-            MappingData() : pronounce(), segments() { }
-            MappingData(const MappingData &other) : pronounce(other.pronounce), segments(other.segments) { }
-            MappingData(const Pronounce &pronounce, const QMap<QString, Segment> &segments) : pronounce(pronounce), segments(segments) { }
+            MappingData() : pronounce(), ranges() { }
+            MappingData(const MappingData &other) : pronounce(other.pronounce), ranges(other.ranges) { }
+            MappingData(const Pronounce &pronounce, const QList<Range> &ranges) : pronounce(pronounce), ranges(ranges) { }
 
             const Pronounce pronounce;
-            const QMap<QString, Segment> segments;
+            const QList<Range> ranges;
         };
         QSharedDataPointer<MappingData> d;
     public:
         Mapping() : d(new MappingData()) { }
         Mapping(const Mapping &other) : d(other.d) { }
-        Mapping(const Pronounce &pronounce, const QMap<QString, Segment> &segments) : d(new MappingData(pronounce, segments)) { }
+        Mapping(const Pronounce &pronounce, const QList<Range> &ranges) : d(new MappingData(pronounce, ranges)) { }
 
         const Pronounce &pronounce() const { return d->pronounce; }
-        const QMap<QString, Segment> &segments() const { return d->segments; }
+        const QList<Range> &ranges() const { return d->ranges; }
     };
 
 }

@@ -12,29 +12,29 @@
 
 namespace haruneko {
 namespace voicebank {
-    class Pronounce {
+    class Pronounce final {
         class PronounceData : public QSharedData {
         public:
             PronounceData() : PronounceData(QString(), QString(), QString()) { }
-            explicit PronounceData(const PronounceData &other) : PronounceData(other.before, other.value, other.after) { }
-            PronounceData(const QString &before, const QString &value, const QString &after) :
-                    before(before), value(value), after(after) { }
+            explicit PronounceData(const PronounceData &other) : PronounceData(other.before, other._this, other.after) { }
+            PronounceData(const QString &before, const QString &_this, const QString &after) :
+                    before(before), _this(_this), after(after) { }
             const QString before;
-            const QString value;
+            const QString _this;
             const QString after;
         };
         QSharedDataPointer<PronounceData> d;
     public:
         Pronounce() : Pronounce("" , "", "") { }
         Pronounce(const Pronounce &other) : d(other.d) { }
-        Pronounce(const QString &before, const QString &value, const QString &after) :
-                d(new PronounceData(before, value, after)) { }
+        Pronounce(const QString &before, const QString &_this, const QString &after) :
+                d(new PronounceData(before, _this, after)) { }
 
-        bool operator ==(const Pronounce &other) const { return before() == other.before() && value() == other.value() && after() == other.after(); }
+        bool operator ==(const Pronounce &other) const { return before() == other.before() && _this() == other._this() && after() == other.after(); }
         Pronounce operator = (const Pronounce &other) { this->d = other.d; return *this; }
 
         const QString &before() const { return d->before; }
-        const QString &value() const { return d->value; }
+        const QString &_this() const { return d->_this; }
         const QString &after() const { return d->after; }
 
     private:
