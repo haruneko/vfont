@@ -7,10 +7,10 @@
 #ifndef VFONT_VOICEBANK_H
 #define VFONT_VOICEBANK_H
 
+#include <QMap>
 #include <QSharedData>
 #include <QSharedDataPointer>
 #include <QString>
-#include "values/Meta.h"
 
 namespace haruneko {
 namespace voicebank {
@@ -18,34 +18,35 @@ namespace voicebank {
 class Voicebank {
     class VoicebankData : public QSharedData {
     public:
-        VoicebankData() : id(), version(), pathMappings(), meta() { }
-        VoicebankData(const QString &id, const QString &version, const QString &pathMappings, const Meta &meta) :
-            id(id), version(version), pathMappings(pathMappings), meta(meta) { }
-        VoicebankData(const VoicebankData &other) : VoicebankData(id, version, pathMappings, meta) { }
+        VoicebankData() : id(), version(), pathMappings(), pathsMetas() { }
+        VoicebankData(const QString &id, const QString &version, const QString &pathMappings, const QMap<QString, QString> &pathsMetas) :
+            id(id), version(version), pathMappings(pathMappings), pathsMetas(pathsMetas) { }
+        VoicebankData(const VoicebankData &other) : VoicebankData(id, version, pathMappings, pathsMetas) { }
 
         const QString id;
         const QString version;
         const QString pathMappings;
-        const Meta meta;
+        // TODO: make it sure that keys format should be ISO 639
+        const QMap<QString, QString> pathsMetas;
     };
     QSharedDataPointer<VoicebankData> d;
 public:
     Voicebank() : d(new VoicebankData()) { }
-    Voicebank(const QString &id, const QString &version, const QString &pathMappings, const Meta &meta) :
-            d(new VoicebankData(id, version, pathMappings, meta)) { }
+    Voicebank(const QString &id, const QString &version, const QString &pathMappings, const QMap<QString, QString> &pathsMetas) :
+            d(new VoicebankData(id, version, pathMappings, pathsMetas)) { }
     Voicebank(const Voicebank &other) : d(other.d) { }
     Voicebank &operator=(const Voicebank &other) { this->d = other.d; return *this; }
 
     const QString &id() const { return d->id; }
     const QString &version() const { return d->version; }
     const QString &pathMappings() const { return d->pathMappings; }
-    const Meta &meta() const {return d->meta; }
+    const QMap<QString, QString> &pathsMetas() const {return d->pathsMetas; }
 
     bool operator==(const Voicebank &other) const {
         return this->id() == other.id() &&
                this->version() == other.version() &&
                this->pathMappings() == other.pathMappings() &&
-               this->meta() == other.meta();
+               this->pathsMetas() == other.pathsMetas();
     }
 };
 
